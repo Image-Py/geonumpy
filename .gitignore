@@ -19,6 +19,7 @@ lib64/
 parts/
 sdist/
 var/
+geonumpy/data/
 wheels/
 *.egg-info/
 .installed.cfg
@@ -46,6 +47,7 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+pygis/data/
 
 # Translations
 *.mo
