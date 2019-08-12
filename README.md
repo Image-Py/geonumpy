@@ -53,7 +53,7 @@ plt.imshow(landsat, cmap='gray')
 plt.show()
 ```
 
-![landsat](./geonumpy/doc/imgs/02.png)
+![landsat](http://idoc.imagepy.org/gis/02.png)
 
 
 
