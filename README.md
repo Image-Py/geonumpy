@@ -67,13 +67,13 @@ degapimg = gpt.degap(img.copy(), img==-9999, 10)
 
 # plot two images ...
 ```
-![](./geonumpy/doc/imgs/16.png)
+![](http://idoc.imagepy.org/gis/16.png)
 
 
 
 ### 影像拼接
 
-![](./geonumpy/doc/imgs/06.png)
+![](http://idoc.imagepy.org/gis/06.png)
 
 ```python
 # 读取山东省 shapefile
@@ -94,7 +94,7 @@ plt.imshow(paper)
 plt.show()
 ```
 
-![](./geonumpy/doc/imgs/04.png)
+![](http://idoc.imagepy.org/gis/04.png)
 
 这里我们使用一个 shapefile 转换到 web 墨卡托坐标系，并用矢量图形确定了图像空间信息，然后将图像块投影到目标图像上，从而实现拼接。
 
@@ -133,7 +133,7 @@ from PIL import Image
 Image.formarray(paper).show()
 ```
 
-![](./geonumpy/doc/imgs/08.png)
+![](http://idoc.imagepy.org/gis/08.png)
 
 geonumpy 提供了为地图定制的一套绘图函数，可以方便的绘制比例尺，指北针，图例等元素。
 
