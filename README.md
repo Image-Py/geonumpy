@@ -19,8 +19,8 @@ geonumpy 暂时没有上传pypi, 请下载后使用 pip install -e 命令加入P
 ### 文档
 [**geonumpy 文档**]()
 
-1. [geonumpy api 文档](doc/index.md#geonumpy API 文档)
-2. [geonumpy 操作手册](doc/index.md#geonumpy 用户手册)
+1. [geonumpy api 文档](doc/index.md#geonumpy_API_文档)
+2. [geonumpy 操作手册](doc/index.md#geonumpy_用户手册)
 
 
 
