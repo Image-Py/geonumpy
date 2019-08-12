@@ -45,7 +45,7 @@ def read_raster(path, chans=None):
     if 'hdf' in path.lower(): return read_hdf(path, chans)
     if 'tif' in path.lower(): return read_tif(path, chans)
 
-def read_tif_info(path):
+def read_tif_box(path):
     ds = gdal.Open(path)
     prj = ds.GetProjection()
     m = ds.GetGeoTransform()
@@ -54,7 +54,7 @@ def read_tif_info(path):
     shape = (ds.RasterYSize, ds.RasterXSize)
     return (shape, prj, m, chans)
 
-def read_hdf_info(path):
+def read_hdf_box(path):
     ds = gdal.Open(path)
     sds = ds.GetSubDatasets()
     rs = gdal.Open(sds[0][0])
@@ -65,9 +65,9 @@ def read_hdf_info(path):
     shape = (rs.RasterYSize, rs.RasterXSize)
     return (shape, prj, m, chans)
 
-def read_raster_info(path):
-    if 'hdf' in path.lower(): return read_hdf_info(path)
-    if 'tif' in path.lower(): return read_tif_info(path)
+def read_raster_box(path):
+    if 'hdf' in path.lower(): return read_hdf_box(path)
+    if 'tif' in path.lower(): return read_tif_box(path)
 
 def write_tif(raster, path):
     #if isinstance(raster, tuple): raster = [raster]

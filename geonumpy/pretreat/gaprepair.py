@@ -1,7 +1,7 @@
 from scipy.ndimage import distance_transform_edt as edt
 import numpy as np
 
-def gap_repair(img, msk, r=0):
+def degap(img, msk, r=0):
 	dis, indices = edt(msk, return_indices=True)
 	if r!=0: msk = msk & (dis<r)
 	if isinstance(img, list): imgs = img

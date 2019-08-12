@@ -103,18 +103,19 @@ def draw_N(raster, x, y, ft, lw, h, color):
     d.text((x, y), 'N', font=font, fill=color)
     raster[:] = np.array(img)
 
-def draw_text(raster, txt, pos, color, ft, anc='lt', align='left'):
+def draw_text(raster, txt, xs, ys, color, ft, anc='lt', align='left'):
     img = Image.fromarray(raster)
     d = ImageDraw.Draw(img)
     if isinstance(txt, str): txt = [txt]
-    if isinstance(pos, tuple): pos = [pos]
+    if not hasattr(xs, '__len__'): xs = [xs]
+    if not hasattr(ys, '__len__'): ys = [ys]
     def f(x, dir=0):
         v = raster.shape[1-dir]
         if x<0: return v+x
         if isinstance(x, int): return x
         if isinstance(x, float): return int(v*x)
     font = ImageFont.truetype(*ft)
-    for t, (x,y) in zip(txt, pos):
+    for t, x,y in zip(txt, xs, ys):
         x, y = f(x), f(y,1)
         w,h = d.textsize(t, font)
         if anc=='ct': x, y = x-w//2, y-h*3/5
@@ -130,13 +131,13 @@ def draw_lab(raster, shp, name, color, font, anc):
     m = raster.mat
     m = [1/m[0,1], 0, 0, -1/m[0,1], -m[0,0]/m[0,1], m[1,0]/m[0,1]]
     pos = [(int(p.x), int(p.y)) for p in [affine_transform(i, m) for i in gs]]
-    return draw_text(raster, shp[name], pos, color, font, anc)
+    return draw_text(raster, shp[name], *list(zip(*pos)), color, font, anc)
 
-def draw_style(raster, x, y, body, mar, recsize, font, box):
+def draw_style(raster, x, y, body, mar, recsize, font, color, box):
     body = body[::-1]
     img = Image.fromarray(raster)
     d = ImageDraw.Draw(img)
-    tcolor = font[2]
+    tcolor = color
     def f(x, dir=0):
         v = raster.shape[1-dir]
         if x<0: return v+x
@@ -178,6 +179,7 @@ def draw_style(raster, x, y, body, mar, recsize, font, box):
         elif item[0]=='blank':
             cury -= item[1]
         else:
+            print(item)
             t, tf, ts = item
             tf = ImageFont.truetype(tf, ts)
             tw, th = d.textsize(t, tf)

@@ -74,7 +74,7 @@ def match_multi(rasters, des, step=10, out='auto', order=1):
 def build_index(fs):
     boxes, bcrs = [], None
     for i in range(len(fs)):
-        shp, crs, m, chans = gio.read_raster_info(fs[i])
+        shp, crs, m, chans = gio.read_raster_box(fs[i])
         if bcrs is None: bcrs = crs
         box = gutil.box2shp(shp, crs, m, chans).to_crs(bcrs)
         boxes.append([box[0], shp, m, chans, fs[i]])

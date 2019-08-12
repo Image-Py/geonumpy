@@ -1,20 +1,27 @@
-from geonumpy import GeoArray
+import geonumpy as gnp
 import numpy as np
 
 if __name__ == '__main__':
-    prj = np.array([[0,1,0],[0,0,1]])
-    a = GeoArray(np.ones((5,5)), crs=4326, mat=prj)
-    print(a.crs)
-    print(a.mat)
-    b = a+1
-    print(a.crs)
-    print(a.mat)
-    c = a[1::2,1::2]
-    print(c.crs)
-    print(c.mat)
+    mat = np.array([[0,1,0],[0,0,1]])
+    garr = gnp.geoarray(np.ones((5,5)), crs=4326, mat=mat)
+    print(garr.crs)
+    print(garr.mat)
+    
+    garr2 = garr+1
+    print(garr2.crs)
+    print(garr2.mat)
+    
+    garr3 = garr[1::2,1::2]
+    print(garr3.crs)
+    print(garr3.mat)
 
-    info = c.get_info()
-    print(info)
+    box = garr.getbox()
+    print(box)
 
-    d = GeoArray.from_info(*info, dtype=np.uint8)
-    print(d.get_info())
+    garr4 = gnp.frombox(*box, dtype=np.uint8)
+    print(garr4.getbox())
+
+    garr_mc = gnp.geoarray(np.ones((5,5,3)), crs=4326, mat=mat)
+    print(garr_mc.crs)
+    print(garr_mc.mat)
+    

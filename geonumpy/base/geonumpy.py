@@ -53,12 +53,16 @@ class GeoArray(np.ndarray):
     def lookup(self, lut):
         return GeoArray(lut[self], self.crs, self.mat)
 
-    def get_box(self): 
+    def getbox(self): 
         return (self.shape, self.crs, self.mat, self.channels())
 
-    @classmethod
-    def from_box(cls, shp, crs, mat, chan, dtype=np.uint8):
-        return GeoArray(np.zeros(shp, dtype=dtype), crs, mat)
+
+def frombox(shp, crs, mat, chan, dtype=np.uint8):
+    return GeoArray(np.zeros(shp, dtype=dtype), crs, mat)
+
+def geoarray(arr, crs=None, mat=np.array([[1,1,0],[1,0,1]])):
+    return GeoArray(arr, crs, mat)
+
         
 if __name__ == '__main__':
     prj = np.array([0,1,0, 0,0,1])
