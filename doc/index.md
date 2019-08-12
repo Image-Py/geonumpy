@@ -106,17 +106,7 @@ geonumpy的编写目的是提供一套开源，易用，高效的地理数据处
 2. [读写 tif/hdf](dem_io.md#读写-tif/hdf)
 3. [读写影像空间信息](dem_io.md#读写影像空间信息)
 
-**[match: 配准与拼接](doc/workflow.md)**
-
-1. [单图的拼接]()
-
-2. [多图的拼接]()
-
-3. [通过矢量索引拼接]()
-
-4. [单图投影转换]()
-
-**[draw: 地图绘制](dem_match.md)**
+**[match: 拼接与配准](dem_match.md)**
 
 1. [素材展示](dem_match.md#素材展示)
 2. [单图投影](dem_match.md#单图投影)
@@ -125,9 +115,24 @@ geonumpy的编写目的是提供一套开源，易用，高效的地理数据处
 5. [通过索引批量匹配](dem_match.md#通过索引批量匹配)
 6. [投影转换](dem_match.md#单图投影转换)
 
+**[draw: 地图绘制](dem_draw.md)**
+
+1. [矢量图绘制](dem_draw.md#矢量图绘制)
+2. [图例的使用](dem_draw.md#图例的使用)
+3. [根据面积进行等级划分](dem_draw.md#根据面积进行等级划分)
+4. [土地利用类型图绘制](dem_draw.md#土地利用类型图绘制)
+
 **[pretreat: 预处理](dem_pretreat.md)**
 
 1. [去条带](dem_pretreat.md#去条带)
+
+**[综合应用：森林覆盖率统计](dem_forest_statistic.md)**
+
+1. [用地类型拼接](dem_forest_statistic.md#用地类型拼接)
+2. [市级行政区标记](dem_forest_statistic.md#市级行政区标记)
+3. [用地类型及标记展示](dem_forest_statistic.md#用地类型及标记展示)
+4. [各个城市森林覆盖率计算](dem_forest_statistic.md#各个城市森林覆盖率计算)
+5. [绘制森林覆盖率专题图](dem_forest_statistic.md#绘制森林覆盖率专题图)
 
 
 
