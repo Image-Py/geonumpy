@@ -16,84 +16,95 @@ geonumpy的编写目的是提供一套开源，易用，高效的地理数据处
 
 ## geonumpy API 文档
 
-**[GeoArray: 带投影的数组](doc/markdown.md)**
+**[GeoArray: 带投影的数组](api_geoarray.md)**
 
-1. [geoarray](doc/markdown.md#MarkDown-Demo)
-2. [frombox](doc/markdown.md#MarkDown-Demo)
+1. [GeoArray](api_geoarray.md#Class GeoArray)
+2. [geoarray](api_geoarray.md#geoarray)
+3. [frombox](api_geoarray.md#frombox)
 
-**[io: 数据读取与存储](doc/macros.md#Macros)**
+**[io: 数据读取与存储](api_io.md)**
 
-1. [read_shp](doc/macros.md#高斯模糊再求反)
-2. [write_shp](doc/macros.md#分割硬币)
-3. [read_tif ]()
-4. [read_hdf]()
-5. [write_tif]()
-6. [write_hdf(未实现)]()
-7. [read_tif_info ]()
-8. [read_hdf_info]()
-9. [read_raster]()
-10. [read_raster_info]()
+1. [read_shp](api_io.md#read_shp)
+2. [write_shp](api_io.md#write_shp)
+3. [read_tif ](api_io.md#read_tif)
+4. [read_hdf](api_io.md#read_hdf)
+5. [write_tif](api_io.md#write_tif)
+6. [write_hdf(未实现)](api_io.md#write_hdf)
+7. [read_tif_info ](api_io.md#read_tif_info)
+8. [read_hdf_info](api_io.md#read_hdf_info)
+9. [read_raster](api_io.md#read_raster)
+10. [read_raster_info](api_io.md#read_raster_info)
 
-**[util: 几个辅助函数](doc/workflow.md)**
+**[util: 几个辅助函数](api_util.md)**
 
-1. [shp2box]()
-2. [box2shp]()
+1. [shp2box](api_util.md#shp2box)
+2. [box2shp](api_util.md#box2shp)
 
-**[match: 配准与拼接](doc/workflow.md)**
+**[match: 配准与拼接](api_match.md)**
 
-1. [match_one]()
-2. [match_multi]()
-3. [build_index]()
-4. [match_idx]()
+1. [match_one](api_match.md#match_one)
+2. [match_multi](api_match.md#match_multi)
+3. [build_index](api_match.md#build_index)
+4. [match_idx](api_match.md#match_idx)
 
-**[draw: 地图绘制](doc/workflow.md)**
+**[draw: 地图绘制](api_draw.md)**
 
-1. [draw_polygon]()
+1. [draw_polygon](api_draw.md#draw_polygon)
 
-2. [draw_line]()
+2. [draw_line](api_draw.md#draw_line)
 
-3. [draw_text]()
+3. [draw_text](api_draw.md#draw_text)
 
-4. [draw_lab]()
+4. [draw_lab](api_draw.md#draw_lab)
 
-5. [draw_unit]()
+5. [draw_unit](api_draw.md#draw_unit)
 
-6. [draw_N]()
+6. [draw_N](api_draw.md#draw_N)
 
-7. [draw_bound]()
+7. [draw_bound](api_draw.md#draw_bound)
 
-8. [draw_ruler]()
+8. [draw_ruler](api_draw.md#draw_ruler)
 
-9. [draw_style]()
+9. [draw_style](api_draw.md#draw_style)
 
-**[draw: 地图绘制](doc/workflow.md)**
+**[pretreat: 预处理](pretreat.md)**
 
-1. [大气校正(未实现)]()
-2. [degap]()
+1. [大气校正(未实现)](pretreat.md)
+2. [degap](pretreat.md#degap)
 
-**[draw: 地图绘制](doc/workflow.md)**
+**[indicate: 常规指标](indicate.md)**
 
-1. [ndvi]()
+1. [ndvi](indicate.md#ndvi)
 
 2. what should be added here! any issue is welcom!
 
-   
+
+**[download: 影像下载](api_download.md)**
+
+1. [modis_search](api_download.md#modis_search)
+2. [modis_download](api_download.md#modis_download)
+3. [landsat_search](lapi_download.md#landsat_search)
+4. [landsat_download(未实现)](api_download.md#landsat_download)
+5. [sentinal_search(未实现)](lapi_download.md)
+6. [sentinal_download(未实现)](api_download.md)
+
+
 
 ## geonumpy 用户手册
 
-**[GeoArray: 带投影的数组](doc/markdown.md)**
+**[GeoArray: 带投影的数组](dem_geoarray.md)**
 
-1. [地理图像的要素](doc/markdown.md#MarkDown-Demo)
-2. [运算保持类型](doc/markdown.md#MarkDown-Demo)
-3. [切片自动处理投影矩阵](doc/markdown.md#MarkDown-Demo)
-4. [生成方法]()
+1. [创建 GeoArray 对象](dem_geoarray.md#创建-GeoArray-对象)
+2. [GeoArray 的运算](dem_geoarray.md#GeoArray-的运算)
+3. [切片自动处理投影矩阵](dem_geoarray.md#GeoArray-的切片)
+4. [生成方法](dem_geoarray.md#获取-box-及从-box-创建)
+5. [多通道处理](dem_geoarray.md#多通道处理)
 
-**[io: 数据读取与存储](doc/macros.md#Macros)**
+**[io: 数据读取与存储](dem_io.md)**
 
-1. [矢量数据的输入输出](doc/macros.md#高斯模糊再求反)
-2. [Tif与Hdf数据的输入输出](doc/macros.md#分割硬币)
-3. [读取指定通道]()
-4. [只读取图像的信息]()
+1. [读写shapefile](dem_io.md#读写shapefile)
+2. [读写 tif/hdf](dem_io.md#读写-tif/hdf)
+3. [读写影像空间信息](dem_io.md#读写影像空间信息)
 
 **[match: 配准与拼接](doc/workflow.md)**
 
@@ -105,19 +116,18 @@ geonumpy的编写目的是提供一套开源，易用，高效的地理数据处
 
 4. [单图投影转换]()
 
-**[draw: 地图绘制](doc/workflow.md)**
+**[draw: 地图绘制](dem_match.md)**
 
-1. [示例1：山东省地图绘制]()
-2. [示例2：根据面积分等]()
-3. [示例1：用遥感图作为底图]()
+1. [素材展示](dem_match.md#素材展示)
+2. [单图投影](dem_match.md#单图投影)
+3. [多图投影](dem_match.md#多图投影)
+4. [创建空间索引](dem_match.md#创建空间索引)
+5. [通过索引批量匹配](dem_match.md#通过索引批量匹配)
+6. [投影转换](dem_match.md#单图投影转换)
 
-**[pretreat: 预处理](doc/workflow.md)**
+**[pretreat: 预处理](dem_pretreat.md)**
 
-1. [landsat level7 degap]()
-
-**[indicate: 常用指标](doc/workflow.md)**
-
-1. [count ndvi]()
+1. [去条带](dem_pretreat.md#去条带)
 
 
 

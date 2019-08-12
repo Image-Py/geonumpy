@@ -92,7 +92,7 @@ modis = gio.read_raster('../data/modis/MOD09Q1.A2019017.h28v05.006.2019030120612
 
 
 
-## 读写影像基础信息
+## 读写影像空间信息
 
 ```python
 path = '../data/landsat/LC08_L1TP_122033_20190506_20190506_01_RT_B5.TIF'

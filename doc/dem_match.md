@@ -57,6 +57,8 @@ match_one 用于单图投影，out 默认为 auto, 表示返回与 raster 相同
 
 **gutil.shp2box(shandong, (2048,1536), 0.05, 1)** 其中第二个参数是图像尺寸或比例尺，如果输入tuple，则指定最终尺寸，比例尺自动计算，如输入数字，则作为比例尺，尺寸自动计算。
 
+
+
 ## 多图投影
 
 ```python
@@ -84,7 +86,7 @@ plt.show()
 
 
 
-## 创建空间索引 build_idx
+## 创建空间索引
 
 ```python
 fs = glob('../data/modis/*.hdf')
@@ -103,7 +105,7 @@ plt.show()
 
 
 
-## 通过索引批量匹配 match_idx
+## 通过索引批量匹配
 
 ```python
 # 读取山东省 shapefile
