@@ -37,7 +37,7 @@ from PIL import Image
 Image.formarray(paper).show()
 ```
 
-![](imgs/08.png)
+![](http://idoc.imagepy.org/gis/08.png)
 
 
 
@@ -66,7 +66,7 @@ paper = paper.lookup(lut)
 from PIL import Image
 Image.formarray(paper).show()
 ```
-![](imgs/09.png)
+![](http://idoc.imagepy.org/gis/09.png)
 
 
 
@@ -121,7 +121,7 @@ from PIL import Image
 Image.formarray(paper).show()
 ```
 
-![](./imgs/10.png)
+![](http://idoc.imagepy.org/gis/10.png)
 
 这里我们使用一个技巧，取得每个城市的面积，然后为面积划分等级，用等级当作颜色进行多边形绘制，最后统一进行色彩映射。其实如果数据中带有等级之类的数值属性，我们也可以传入一个字符串当作颜色，函数会根据字符串查找对应的列当作颜色进行绘制。
 
@@ -190,5 +190,5 @@ Image.formarray(paper).show()
 
 ```
 
-![](./imgs/11.png)
+![](http://idoc.imagepy.org/gis/11.png)
 

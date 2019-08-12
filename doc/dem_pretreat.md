@@ -23,6 +23,6 @@ ax2.imshow(degapimg, cmap='gray')
 plt.show()
 
 ```
-![](./imgs/16.png)
+![](http://idoc.imagepy.org/gis/16.png)
 
 部分旧传感器返回的数据中带有条带，degap 函数可以有效的处理条带。

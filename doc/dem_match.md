@@ -23,7 +23,7 @@ ax3.imshow(gio.read_hdf(fs[2], 0))
 plt.show()
 ```
 
-![](imgs/06.png)
+![](http://idoc.imagepy.org/gis/06.png)
 
 
 
@@ -51,7 +51,7 @@ gmt.match_one(raster, paper, out='in')
 plt.imshow(paper)
 plt.show()
 ```
-![](imgs/03.png)
+![](http://idoc.imagepy.org/gis/03.png)
 
 match_one 用于单图投影，out 默认为 auto, 表示返回与 raster 相同类型的结果，也可以为 dtype，指定返回结果类型，in 表示 在 des 上进行投影。 
 
@@ -78,7 +78,7 @@ plt.imshow(paper)
 plt.show()
 ```
 
-![](./imgs/04.png)
+![](http://idoc.imagepy.org/gis/04.png)
 
 与单图类似，这里读取一个 GeoArray 的序列，用 match_multi 进行投影，而 out 使用 in，重复投影点，函数会以最大值为准，因而我们得到了完整的拼接结果。
 
@@ -97,7 +97,7 @@ idx.plot()
 plt.show()
 ```
 
-![landsat](./imgs/05.png)
+![landsat](http://idoc.imagepy.org/gis/05.png)
 
 这里调用 io.read_raster_info 读取每个影像的空间信息，创建对应的多边形矢量，而不直接读取像素，而这个空间索引却包含了影像所处的位置信息，投影信息，以及对应的文件路径。遥感影像通常很大，我们无法一次性全部读取到内存，因而这个空间索引就有重要的作用。
 
@@ -124,7 +124,7 @@ plt.imshow(paper)
 plt.show()
 ```
 
-![](./imgs/04.png)
+![](http://idoc.imagepy.org/gis/04.png)
 
 通过 match_idx 我们也拼接得到了同样的结果，与 match_multi 非常类似，但是有几点不同，match_idx 可以通过空间索引，自动查找相关的地块，在需要的时候读取，并及时释放。对于遥感数据，计算机很难将全部图像载入内存，即便载入，也需要判断需要投影的块，而使用 idx 空间索引，就可以很好解决以上问题。
 
@@ -149,4 +149,4 @@ plt.imshow(paper)
 plt.show()
 ```
 
-![](./imgs/07.png)
+![](http://idoc.imagepy.org/gis/07.png)

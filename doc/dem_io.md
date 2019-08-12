@@ -38,7 +38,7 @@ print(gdf)
 gdf.plot()
 plt.show()
 ```
-![](imgs/01.png)
+![](http://idoc.imagepy.org/gis/01.png)
 
 read_shp 是调用 geopandas 的 read_file 方法，返回的是 GeoDataFrame 对象，带有 crs 以及一个 geometry 列。
 
@@ -71,7 +71,7 @@ plt.imshow(landsat, cmap='gray')
 plt.show()
 ```
 
-![landsat](./imgs/02.png)
+![landsat](http://idoc.imagepy.org/gis/02.png)
 
 我们可以用 read_tif 方法将 tif 文件读取为 GeoArray 对象，对于多通道，可以加入chan参数读取指定通道，默认读取全部通道。
 

@@ -33,7 +33,7 @@ def match_class(df):
     gio.write_tif(paper, '../data/result/shandong_class.tif')
 ```
 
-![](imgs/13.png)
+![](http://idoc.imagepy.org/gis/13.png)
 
 由于用地类型拼接是比较耗时的工作，因而我们将拼接结果保存下来。
 
@@ -51,7 +51,7 @@ def city_label(df):
     gio.write_tif(paper, '../data/result/shandong_label.tif')
 ```
 
-![](imgs/14.png)
+![](http://idoc.imagepy.org/gis/14.png)
 
 这里我们用同样的尺寸绘制标记图像，我们采用多边形绘制，但颜色传入的是一个 arange 序号，同样，我们将标记结果存储，以便后续使用。
 
@@ -69,7 +69,7 @@ def show_class_label(cls, lab):
     plt.show()
 ```
 
-![](imgs/12.png)
+![](http://idoc.imagepy.org/gis/12.png)
 
 读取两张图，并绘制出来。
 
@@ -167,6 +167,6 @@ def draw_ratio(cls, lab, df):
     return paper.lookup(lut)
 ```
 
-![](imgs/15.png)
+![](http://idoc.imagepy.org/gis/15.png)
 
 最后我们绘制森林覆盖率统计结果的专题图。
