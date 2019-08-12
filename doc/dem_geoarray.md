@@ -4,7 +4,7 @@ GeoArray 是地理图像处理的基础，继承于ndarray，携带坐标系与�
 
 
 
-## 创建GeoArray对象
+## 创建 GeoArray 对象
 
 ```python
 import geonumpy as gnp
@@ -62,7 +62,7 @@ GeoArray 在进行数组切片的时候，会自动转换 mat，这里我们从1
 
 
 
-## 获取box，以及从box创建
+## 获取 box 及从 box 创建
 
 ```python
 box = garr.getbox()
