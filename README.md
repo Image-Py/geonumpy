@@ -5,15 +5,19 @@ geonumpy 是一个 GIS，遥感影像处理库，实现了矢量，遥感影像�
 
 ### 安装
 
-依赖库：numpy，scipy, matplotlib, pandas
-
-地理依赖库：gdal, fiona, shapely, geopandas
-
-几个地理依赖库不太好装，请参阅 geopandas 官网，有详细的安装方法。
+gdal, fiona, shapely, geopandas这几个依赖库不但是由python实现，所以比较难以安装
 
 geonumpy 暂时没有上传pypi, 请下载后使用 pip install -e 命令加入PythonPath
 
-
+- Windows系统
+  - clone或者下载源码
+  - `pip install --upgrade setuptools`
+  - `python -m pip install --upgrade pip`
+  - 分别下载对应本机版本的包[gdal](https://www.lfd.uci.edu/~gohlke/pythonlibs/#GDAL)、[fiona](https://www.lfd.uci.edu/~gohlke/pythonlibs/#fiona)、[shapely](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)，然后分别执行`pip install package_name.whl`安装
+  - geopandas通过`pip install geopandas`或者去查看[官方文档](http://geopandas.org/)
+  - 最后执行`pip install -e geonumpy`安装完毕
+- like-unix系统(ubuntu / centos / mac)
+  - `git clone https://github.com/Image-Py/geonumpy; ./geonumpy/install.sh`
 
 
 ### 文档
