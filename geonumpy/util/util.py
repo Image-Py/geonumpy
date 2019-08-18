@@ -3,9 +3,9 @@ from shapely.geometry import Polygon
 import geopandas as gpd
 import pyproj, numpy as np
 
-def makeprj(prj): return pyproj.CRS(prj)
+def makecrs(prj): return pyproj.CRS(prj)
 
-def shp2box(shape, scale, margin=0.05, chan=1):
+def shp2box(shape, scale, margin=0.05):
     if isinstance(shape, gpd.GeoDataFrame):
         shape = shape['geometry']
     shapes = shape.values
@@ -23,11 +23,11 @@ def shp2box(shape, scale, margin=0.05, chan=1):
         l, t, r, b = (ox-w/2, oy-h/2, ox+w/2, oy+h/2)
     offsetx, offsety = l-w*kmargin, b+h*kmargin
     shp = np.array((h,w))*(1+(kmargin*2))/scale
-    shp = (tuple(shp.round().astype(np.int))+(chan,))[:3-(chan==1)]
+    shp = (tuple(shp.round().astype(np.int)))
     m = np.array([offsetx, scale, 0, offsety, 0, -scale]).reshape((2,3))
-    return (shp, shape.crs, m, chan)
+    return (shp, shape.crs, m)
 
-def box2shp(shape, crs, m, chans):
+def box2shp(shape, crs, m):
     hs, ws = shape[:2]
     xx = np.linspace(0,ws,100).reshape((-1,1))*[1,0]
     yy = np.linspace(0,hs,100).reshape((-1,1))*[0,1]

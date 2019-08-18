@@ -21,23 +21,24 @@ def all_source():
 def match_one_test():
     shandong = gio.read_shp('../data/shape/shandong.shp')
     shandong = shandong.to_crs(3857)
-    info = gutil.shp2box(shandong, (2048,1536), 0.05, 1)
-    paper = gnp.frombox(*info, dtype=np.int16)
+    info = gutil.shp2box(shandong, (2048,1536), 0.05)
+    #paper = gnp.frombox(*info, dtype=np.int16)
     path = '../data/modis/MOD09Q1.A2019017.h27v05.006.2019030120430.hdf'
-    raster = gio.read_hdf(path, 0)
-    gmt.match_one(raster, paper, out='in')
-    plt.imshow(paper)
+    raster = gio.read_hdf(path)
+    print(raster.shape)
+    rst = gmt.match_one(raster, info, 0)
+    print(rst.shape)
+    plt.imshow(rst)
     plt.show()
 
 def match_multi_test():
     shandong = gio.read_shp('../data/shape/shandong.shp')
     shandong = shandong.to_crs(3857)
-    info = gutil.shp2box(shandong, (2048,1536), 0.05, 1)
-    paper = gnp.frombox(*info, dtype=np.int16)
+    info = gutil.shp2box(shandong, (2048,1536), 0.05)
     fs = glob('../data/modis/*.hdf')
     rasters = [gio.read_hdf(i, 0) for i in fs]
-    gmt.match_multi(rasters, paper, out='in')
-    plt.imshow(paper)
+    rst = gmt.match_multi(rasters, info, 0)
+    plt.imshow(rst)
     plt.show()
 
 def build_idx_test():
@@ -49,22 +50,20 @@ def build_idx_test():
 def match_idx_test():
     shandong = gio.read_shp('../data/shape/shandong.shp')
     shandong = shandong.to_crs(3857)
-    info = gutil.shp2box(shandong, (2048,768*2), 0.05, 1)
-    paper = gnp.frombox(*info, dtype=np.int16)
+    info = gutil.shp2box(shandong, (2048,768*2), 0.05)
     
     fs = glob('../data/modis/*.hdf')
     idx = gmt.build_index(fs)
     
-    gmt.match_idx(idx, paper, out='in', chan=[0])
-    
-    plt.imshow(paper)
+    rst = gmt.match_idx(idx, info, chan=[0,1])
+    plt.imshow(rst)
     plt.show()
 
 def crs_trans_test():
     path = '../data/modis/MOD09Q1.A2019017.h27v05.006.2019030120430.hdf'
     raster = gio.read_hdf(path, 0)
     outshp = gutil.box2shp(*raster.getbox()).to_crs(3857)
-    box = gutil.shp2box(outshp, 1000, 0, 1)
+    box = gutil.shp2box(outshp, 1000, 0)
     paper = gnp.frombox(*box, dtype=np.int16)
     gmt.match_one(raster, paper, out='in')
 
@@ -72,9 +71,13 @@ def crs_trans_test():
     plt.show()
     
 if __name__ == '__main__':
-    all_source()
-    match_one_test()
-    match_multi_test()
-    build_idx_test()
+    #all_source()
+    # match_one_test()
+    #match_multi_test()
+    
+    # build_idx_test()
+    
     match_idx_test()
+    '''
     crs_trans_test()
+    '''

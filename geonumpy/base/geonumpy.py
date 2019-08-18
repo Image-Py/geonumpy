@@ -54,10 +54,11 @@ class GeoArray(np.ndarray):
         return GeoArray(lut[self], self.crs, self.mat)
 
     def getbox(self): 
-        return (self.shape, self.crs, self.mat, self.channels())
+        return (self.shape[:2], self.crs, self.mat)
 
 
-def frombox(shp, crs, mat, chan, dtype=np.uint8):
+def frombox(shp, crs, mat, chan=1, dtype=np.uint8):
+    if chan>1: shp += (chan,)
     return GeoArray(np.zeros(shp, dtype=dtype), crs, mat)
 
 def geoarray(arr, crs=None, mat=np.array([[1,1,0],[1,0,1]])):

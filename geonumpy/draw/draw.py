@@ -19,6 +19,7 @@ def draw_polygon(raster, shape, color, width):
     for g, c in zip(geoms, colors):
         gs = affine_transform(g, m)
         if isinstance(gs, Polygon): gs = [gs]
+        if isinstance(gs, LineString): gs = [gs]
         for g in gs:
             pts = np.array(g.exterior.xy).T.astype(np.int).reshape((-1,2))
             pts = [tuple(i) for i in pts]
