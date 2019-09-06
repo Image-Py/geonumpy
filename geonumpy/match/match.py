@@ -65,7 +65,7 @@ def match_one(raster, out, chan='all', step=10, order=1):
     return imgd
 
 def match_multi(rasters, out, chan='all', step=10, order=1):
-    if chan=='all': chan = list(range(raster.channels()))
+    if chan=='all': chan = list(range(rasters[0].channels()))
     if isinstance(chan, int): chan = [chan]
     if isinstance(out, tuple):
         out = gnp.frombox(*out, len(chan), rasters[0].dtype)
@@ -85,7 +85,7 @@ def build_index(fs):
     return gpd.GeoDataFrame(boxes, columns=columns, crs=bcrs)
 
 def match_idx(idx, out, chan='all', step=10, order=1):
-    if chan=='all': chan = list(range(raster.channels()))
+    if chan=='all': chan = list(range(len(idx['channels'][0])))
     if isinstance(chan, int): chan = [chan]
     if isinstance(out, tuple): shape, crs, mat = out
     else: shape, crs, mat = out.shape, out.crs, out.mat

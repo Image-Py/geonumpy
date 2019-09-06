@@ -60,22 +60,21 @@ def draw_mask(img, msk):
             img[r,c] = img[r,c]*(1-wg) + msk[r,c,:3]*wg
     return img
 
-def draw_unit(raster, x, y, w, h, ft, color, unit, lw, anc='l'):
+def draw_unit(raster, x, y, w, h, ft, color, unit, lw, anc='left'):
     y = y-h
     img = Image.fromarray(raster)
     d = ImageDraw.Draw(img)
     def f(x, dir=0):
         v = raster.shape[1-dir]
-        if x<0: return v+x
-        if isinstance(x, int): return x
-        if isinstance(x, float): return int(v*x)
-
+        if abs(x)>1: x = int(x)
+        else: x = int(v * x)
+        return x if x>=0 else v+x
     step = int(round(f(w,0)*raster.mat[0,1]/10000))
     if step>100:
         n = 10**len(str(step))/10
         step = int(np.round(step/n)*n)
     cell = int(step * 1000 / raster.mat[0,1])
-    offsetx = 0 if anc=='l' else -cell *10
+    offsetx = 0 if anc=='left' else -cell *10
     for s, e, c in zip((0,1,3,6), (1,3,6,10), (1,0,1,0)):
         d.rectangle([f(x)+s*cell+offsetx, f(y,1), 
                      f(x)+e*cell+offsetx, f(y,1)+f(h)],
@@ -92,9 +91,9 @@ def draw_N(raster, x, y, ft, lw, h, color):
     d = ImageDraw.Draw(img)
     def f(x, dir=0):
         v = raster.shape[1-dir]
-        if x<0: return v+x
-        if isinstance(x, int): return x
-        if isinstance(x, float): return int(v*x)
+        if abs(x)>1: x = int(x)
+        else: x = int(v * x)
+        return x if x>=0 else v+x
     x, y = f(x), f(y, 1)
     d.polygon([x, y, x, y+h, x-h/2, y+h*5//3], color)
     d.line([x, y, x-h/2, y+h*5//3, x, y+h, x+h/2, y+h*5//3, x, y], color, lw)
@@ -112,9 +111,9 @@ def draw_text(raster, txt, xs, ys, color, ft, anc='lt', align='left'):
     if not hasattr(ys, '__len__'): ys = [ys]
     def f(x, dir=0):
         v = raster.shape[1-dir]
-        if x<0: return v+x
-        if isinstance(x, int): return x
-        if isinstance(x, float): return int(v*x)
+        if abs(x)>1: x = int(x)
+        else: x = int(v * x)
+        return x if x>=0 else v+x
     font = ImageFont.truetype(*ft)
     for t, x,y in zip(txt, xs, ys):
         x, y = f(x), f(y,1)
@@ -124,6 +123,7 @@ def draw_text(raster, txt, xs, ys, color, ft, anc='lt', align='left'):
         if anc=='lt': x, y = x, y
         if anc=='rb': x, y = x-w, y-h
         if anc=='rt': x = x-w
+        print(x,y,'===')
         d.text((x, y), t, font=font, fill=color, align=align, spacing=ft[1]*0.3)
     raster[:] = np.array(img)
 
@@ -141,10 +141,9 @@ def draw_style(raster, x, y, body, mar, recsize, font, color, box):
     tcolor = color
     def f(x, dir=0):
         v = raster.shape[1-dir]
-        if x<0: return v+x
-        if isinstance(x, int): return x
-        if isinstance(x, float): return int(v*x)
-
+        if abs(x)>1: x = int(x)
+        else: x = int(v * x)
+        return x if x>=0 else v+x
     cury, maxx, (w, h, lw) = f(y,1)-mar[1], 0, recsize
     font = ImageFont.truetype(*font[:2])
     for i in range(len(body)):
@@ -192,15 +191,13 @@ def draw_style(raster, x, y, body, mar, recsize, font, color, box):
     raster[:] = np.array(img)
 
 def draw_ruler(raster, left, top, right, bot, step, crs, font, color, w, dh): 
-
     img = Image.fromarray(raster)
     d = ImageDraw.Draw(img)
     def f(x, dir=0):
         v = raster.shape[1-dir]
-        if x<0: return v+x
-        if isinstance(x, int): return x
-        if isinstance(x, float): return int(v*x)
-    
+        if abs(x)>1: x = int(x)
+        else: x = int(v * x)
+        return x if x>=0 else v+x
     left, top, right, bot = f(left), f(top,1), f(right), f(bot,1)
     d.rectangle([left, top, right, bot], outline=color, width=w)
     pts = np.array([(left,top),(right,top),(right,bot),(left,bot)])
@@ -250,9 +247,9 @@ def draw_ruler(raster, left, top, right, bot, step, crs, font, color, w, dh):
 def draw_bound(raster, left, top, right, bot, c, lw, clear=None):
     def f(x, dir=0):
         v = raster.shape[1-dir]
-        if x<0: return v+x
-        if isinstance(x, int): return x
-        if isinstance(x, float): return int(v*x)
+        if abs(x)>1: x = int(x)
+        else: x = int(v * x)
+        return x if x>=0 else v+x
     left, top, right, bot = f(left), f(top,1), f(right), f(bot,1)
     if not clear is None:
         raster[:top] = clear

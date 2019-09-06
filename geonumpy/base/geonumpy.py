@@ -36,13 +36,15 @@ class GeoArray(np.ndarray):
             out_arr = out_arr.__array__()
         return out_arr
 
-    def project(self, r, c):
+    def project(self, x, y):
         m, offset = self.mat[:,1:], self.mat[:,:1]
-        return np.dot(m, [[c],[r]]) + offset
+        xy = np.array([x, y]).reshape((2,-1))
+        return np.dot(m, xy) + offset
 
     def invpro(self, e, n):
         m, offset = self.mat[:,1:], self.mat[:,:1]
-        return np.dot(inv(m), [[e][n]] - offset)
+        en = np.array([e, n]).reshape((2,-1))
+        return np.dot(inv(m), en - offset)
 
     def channels(self, n=None):
         if n is None:

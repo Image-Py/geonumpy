@@ -126,7 +126,7 @@ def draw_class():
 
     gdraw.draw_text(paper, '山东省土地利用类型', 80, 60, 0, ('simkai', 128))
 
-    gdraw.draw_N(paper, -240, 240, ('simhei', 100), 2, 100, 0)
+    gdraw.draw_N(paper, -240, 240, ('微软雅黑', 100), 2, 100, 0)
 
     gdraw.draw_polygon(paper, liaoning, 0, 2)
     
@@ -138,9 +138,9 @@ def draw_class():
 if __name__ == '__main__':
     
     #rst = draw_simple()
-    #rst = draw_style()
+    rst = draw_style()
     #rst = draw_grade()
-    rst = draw_class()
+    #rst = draw_class()
     
-    Image.fromarray(rst).save('../doc/imgs/00.png')
+    # Image.fromarray(rst).save('../doc/imgs/00.png')
     Image.fromarray(rst).show()
