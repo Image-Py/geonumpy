@@ -11,15 +11,15 @@ from glob import glob
 
 def match_class(df):
     shandong = df.to_crs(3857)
-    box = gutil.shp2box(shandong, (3600, 2400), 0.15, 1)
+    box = gutil.shp2box(shandong, (3600, 2400), 0.15)
     paper = gnp.frombox(*box, dtype=np.uint8)
     idx = gmt.build_index(glob('../data/class/*.tif'))
-    gmt.match_idx(idx, paper, out='in', order=0)
+    gmt.match_idx(idx, out=paper, order=0)
     gio.write_tif(paper, '../data/result/shandong_class.tif')
 
 def city_label(df):
     shandong = df.to_crs(3857)
-    box = gutil.shp2box(shandong, (3600, 2400), 0.15, 1)
+    box = gutil.shp2box(shandong, (3600, 2400), 0.15)
     paper = gnp.frombox(*box, dtype=np.uint8)
     gdraw.draw_polygon(paper, shandong, np.arange(len(shandong))+1, 0)
     gio.write_tif(paper, '../data/result/shandong_label.tif')
@@ -89,8 +89,8 @@ def draw_ratio(cls, lab, df):
 
 if __name__ == '__main__':
     shandong = gio.read_shp('../data/shape/shandong.shp')
-    # match_class(shandong)
-    # city_label(shandong)
+    match_class(shandong)
+    city_label(shandong)
     
     cls = gio.read_tif('../data/result/shandong_class.tif')
     lab = gio.read_tif('../data/result/shandong_label.tif')

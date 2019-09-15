@@ -35,6 +35,14 @@ def box2shp(shape, crs, m):
     xy = np.dot(m[:,1:], xy.T) + m[:,:1]
     return gpd.GeoSeries([Polygon(xy.T)], crs=pyproj.CRS(crs).to_proj4())
 
+def shp_bounds(shape):
+    bds = shape.bounds
+    return [bds['minx'].min(), bds['miny'].min(), 
+            bds['maxx'].max(), bds['maxy'].max()]
+
+def box_boundx(shape, crs, m):
+    return shp_bounds(box2shp(shape, crs, m))
+
 if __name__ == '__main__':
     shp = read_shp('../../tasks/country_china_wheat_2018/region.shp')
     from time import time

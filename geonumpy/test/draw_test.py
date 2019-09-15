@@ -11,8 +11,8 @@ from glob import glob
 def draw_simple():
     shandong = gio.read_shp('../data/shape/shandong.shp')
     shandong = shandong.to_crs(3857)
-    box = gutil.shp2box(shandong, (3600, 2400), 0.1, 1)
-    paper = gnp.frombox(*box, dtype=np.uint8)
+    box = gutil.shp2box(shandong, (3600, 2400), 0.1)
+    paper = gnp.frombox(*box, chan=1, dtype=np.uint8)
     paper[:] = 255
     gdraw.draw_polygon(paper, shandong, 0, 2)
     gdraw.draw_ruler(paper, 80, 50, -80, -50, 1, 4326, ('times', 32), 0, 2, 5)
@@ -43,7 +43,7 @@ def draw_style():
 def draw_grade():
     shandong = gio.read_shp('../data/shape/shandong.shp')
     shandong = shandong.to_crs(3857)
-    box = gutil.shp2box(shandong, (3600, 2400), 0.1, 1)
+    box = gutil.shp2box(shandong, (3600, 2400), 0.1)
     paper = gnp.frombox(*box, dtype=np.uint8)
     
     areas = shandong.area
@@ -95,13 +95,13 @@ def draw_class():
     # ===== read shape file and make a paper =====
     liaoning = gio.read_shp('../data/shape/shandong.shp')
     liaoning = liaoning.to_crs(3857)
-    box = gutil.shp2box(liaoning, (3600, 2400), 0.15, 1)
+    box = gutil.shp2box(liaoning, (3600, 2400), 0.15)
     paper = gnp.frombox(*box, dtype=np.uint8)
 
     # ===== match the class tif into paper
     fs = glob('../data/class/*.tif')
     idx = gmt.build_index(fs)
-    gmt.match_idx(idx, paper, out='in', order=0)
+    gmt.match_idx(idx, out=paper, order=0)
 
     msk = paper * 0
     gdraw.draw_polygon(msk, liaoning, 255, 0)
@@ -126,7 +126,7 @@ def draw_class():
 
     gdraw.draw_text(paper, '山东省土地利用类型', 80, 60, 0, ('simkai', 128))
 
-    gdraw.draw_N(paper, -240, 240, ('微软雅黑', 100), 2, 100, 0)
+    gdraw.draw_N(paper, -240, 240, ('msyh', 100), 2, 100, 0)
 
     gdraw.draw_polygon(paper, liaoning, 0, 2)
     
@@ -137,10 +137,10 @@ def draw_class():
     
 if __name__ == '__main__':
     
-    #rst = draw_simple()
+    rst = draw_simple()
     rst = draw_style()
-    #rst = draw_grade()
-    #rst = draw_class()
+    rst = draw_grade()
+    rst = draw_class()
     
-    # Image.fromarray(rst).save('../doc/imgs/00.png')
+    Image.fromarray(rst).save('../doc/imgs/00.png')
     Image.fromarray(rst).show()

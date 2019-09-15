@@ -55,7 +55,7 @@ def match_idx_test():
     fs = glob('../data/modis/*.hdf')
     idx = gmt.build_index(fs)
     
-    rst = gmt.match_idx(idx, info, chan=[0,1])
+    rst = gmt.match_idx(idx, info, chan=[0])
     plt.imshow(rst)
     plt.show()
 
@@ -65,19 +65,18 @@ def crs_trans_test():
     outshp = gutil.box2shp(*raster.getbox()).to_crs(3857)
     box = gutil.shp2box(outshp, 1000, 0)
     paper = gnp.frombox(*box, dtype=np.int16)
-    gmt.match_one(raster, paper, out='in')
+    gmt.match_one(raster, out=paper)
 
     plt.imshow(paper)
     plt.show()
     
 if __name__ == '__main__':
-    #all_source()
-    # match_one_test()
-    #match_multi_test()
+    all_source()
+    match_one_test()
+    match_multi_test()
     
-    # build_idx_test()
+    build_idx_test()
     
     match_idx_test()
-    '''
+    
     crs_trans_test()
-    '''
