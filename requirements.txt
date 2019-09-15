@@ -1,9 +1,6 @@
 scikit-image
-geopandas
 numpy
 scipy
 matplotlib
 pandas
-# fiona
-# shapely
-# gdal
+geopandas
