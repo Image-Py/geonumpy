@@ -32,8 +32,9 @@ class GeoArray(np.ndarray):
             return super().__getitem__(item).__array__()
 
     def __array_wrap__(self, out_arr, context=None):
-        if out_arr.shape[:2] != self.shape[:2]:
-            out_arr = out_arr.__array__()
+        if out_arr.shape[:2] == self.shape[:2]:
+            out_arr = out_arr.view(GeoArray)
+            out_arr.crs, out_arr.mat = self.crs, self.mat
         return out_arr
 
     def project(self, x, y):
@@ -69,7 +70,11 @@ def geoarray(arr, crs=None, mat=np.array([[1,1,0],[1,0,1]])):
         
 if __name__ == '__main__':
     prj = np.array([0,1,0, 0,0,1])
-    a = GeoArray(np.ones((5,5)), crs=4326, mat=prj)
+    a = GeoArray(np.ones((5,5,3)), crs=4326, mat=prj)
+    b = a.mean(axis=-1)
+    print(type(b))
+    print(b.shape)
+    '''
     print(a.crs)
     print(a.mat)
     b = a+1
@@ -78,3 +83,4 @@ if __name__ == '__main__':
     c = a[1::2,1::2]
     print(c.crs)
     print(c.mat)
+    '''

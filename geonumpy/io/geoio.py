@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import geopandas as gpd
-import pyproj
+import pyproj, json
 from ..base import GeoArray
 
 def read_shp(path, encoding='utf-8'):
     return gpd.read_file(path, encoding=encoding)
 
 def write_shp(shp, path, encoding='utf-8'): 
-    shp.to_file(path, encoding)
+    shp.to_file(path, encoding=encoding)
 
 def read_hdf(path, chans=None):
     ds = gdal.Open(path)
@@ -84,6 +84,19 @@ def write_tif(raster, path):
     tif.SetProjection(crs.ExportToWkt())
     for i in range(raster.channels()):
         tif.GetRasterBand(i+1).WriteArray(raster.channels(i))
+
+def write_raw(raster, path):
+    raster.tofile(path)
+    info = {'dtype':str(raster.dtype), 'shape':raster.shape, 
+        'crs':raster.crs, 'mat':raster.mat.ravel().tolist()}
+    with open(path[:-path[::-1].index('.')]+'json', 'w') as f:
+        f.write(json.dumps(info))
+
+def read_raw(path):
+    with open(path[:-path[::-1].index('.')]+'json') as f:
+        obj = json.loads(f.read())
+    arr = np.fromfile(path, dtype=obj['dtype']).reshape(obj['shape'])
+    return GeoArray(arr, obj['crs'], np.array(obj['mat']))
 
 def show_raster(raster, c=0):
     plt.imshow(raster.imgs[c])

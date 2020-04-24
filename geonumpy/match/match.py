@@ -56,11 +56,11 @@ def match_one(raster, out, chan='all', step=10, order=1):
     frc[1] = (frc[1]-left)/(right-left)*(nw-1)
     xs = map_coordinates(xs, frc, cval=-100, order=1)
     ys = map_coordinates(ys, frc, cval=-100, order=1)
-    for i in chan:
+    for i, j in enumerate(chan):
         #range(img.channels()):
-        rcs, dcs = img.channels(i), imgd.channels(i)
-        rcs = np.pad(rcs, 1, 'edge')
-        vs = map_coordinates(rcs, np.array([ys, xs])+1, order=order)#prefilter=False)
+        rcs, dcs = img.channels(j), imgd.channels(i)
+        rcs = np.pad(rcs, 3, 'edge')
+        vs = map_coordinates(rcs, np.array([ys, xs])+3, order=order)#prefilter=False)
         dcs[tuple(rc)] = np.max((dcs[tuple(rc)], vs), axis=0)   
     return imgd
 
@@ -85,10 +85,11 @@ def build_index(fs):
     return gpd.GeoDataFrame(boxes, columns=columns, crs=bcrs)
 
 def match_idx(idx, out, chan='all', step=10, order=1):
-    if chan=='all': chan = list(range(len(idx['channels'][0])))
-    if isinstance(chan, int): chan = [chan]
     if isinstance(out, tuple): shape, crs, mat = out
     else: shape, crs, mat = out.shape, out.crs, out.mat
+    if len(idx)==0: return gnp.frombox(shape, crs, mat, len(chan))
+    if chan=='all': chan = list(range(len(idx['channels'][0])))
+    if isinstance(chan, int): chan = [chan]
     idx = idx.to_crs(gutil.makecrs(crs).to_proj4())
     box = gutil.box2shp(shape, crs, mat)[0]
     for i in idx.index:
@@ -98,9 +99,9 @@ def match_idx(idx, out, chan='all', step=10, order=1):
             if isinstance(out, tuple):
                 out = gnp.frombox(*out, len(chan), raster.dtype)
             print('merge ...', idx.loc[i]['path'], end=' ')
-            match_one(raster, out, chan, step, order)
+            match_one(raster, out, 'all', step, order)
             print('end')
-    return out
+    return gnp.frombox(*out, len(chan)) if isinstance(out, tuple) else out 
     
 if __name__ == '__main__':
     wkt = 'PROJCS["China_Lambert_Conformal_Conic",GEOGCS["GCS_Beijing_1954",DATUM["Beijing_1954",SPHEROID["Krassowsky_1940",6378245,298.3,AUTHORITY["EPSG","7024"]],AUTHORITY["EPSG","6214"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",30],PARAMETER["standard_parallel_2",62],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",105],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]]]'

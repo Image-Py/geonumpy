@@ -8,7 +8,7 @@ from numba import jit
 def draw_polygon(raster, shape, color, width):
     shape = shape.to_crs(raster.crs)
     m = raster.mat
-    m = [1/m[0,1], 0, 0, -1/m[0,1], -m[0,0]/m[0,1], m[1,0]/m[0,1]]
+    m = [1/m[0,1], 0, 0, 1/m[1,2], -m[0,0]/m[0,1], -m[1,0]/m[1,2]]
     img = Image.fromarray(raster)
     draw = ImageDraw.Draw(img)
     geoms = shape['geometry']
@@ -61,7 +61,6 @@ def draw_mask(img, msk):
     return img
 
 def draw_unit(raster, x, y, w, h, ft, color, unit, lw, anc='left'):
-    y = y-h
     img = Image.fromarray(raster)
     d = ImageDraw.Draw(img)
     def f(x, dir=0):
@@ -123,7 +122,6 @@ def draw_text(raster, txt, xs, ys, color, ft, anc='lt', align='left'):
         if anc=='lt': x, y = x, y
         if anc=='rb': x, y = x-w, y-h
         if anc=='rt': x = x-w
-        print(x,y,'===')
         d.text((x, y), t, font=font, fill=color, align=align, spacing=ft[1]*0.3)
     raster[:] = np.array(img)
 
@@ -179,7 +177,6 @@ def draw_style(raster, x, y, body, mar, recsize, font, color, box):
         elif item[0]=='blank':
             cury -= item[1]
         else:
-            print(item)
             t, tf, ts = item
             tf = ImageFont.truetype(tf, ts)
             tw, th = d.textsize(t, tf)
