@@ -32,10 +32,17 @@ class GeoArray(np.ndarray):
             return super().__getitem__(item).__array__()
 
     def __array_wrap__(self, out_arr, context=None):
-        if out_arr.shape[:2] == self.shape[:2]:
-            out_arr = out_arr.view(GeoArray)
-            out_arr.crs, out_arr.mat = self.crs, self.mat
+        if out_arr.shape[:2] != self.shape[:2]:
+            out_arr = out_arr.__array__()
         return out_arr
+
+    @property
+    def imat(self):
+        imat = np.vstack((self.mat[:,[1,2,0]], [[0,0,1]]))
+        return np.linalg.inv(imat)[:2,[2,0,1]]
+
+    @property
+    def imat1(self): return self.imat.ravel()[[1,2,4,5,0,3]]
 
     def project(self, x, y):
         m, offset = self.mat[:,1:], self.mat[:,:1]
@@ -70,11 +77,7 @@ def geoarray(arr, crs=None, mat=np.array([[1,1,0],[1,0,1]])):
         
 if __name__ == '__main__':
     prj = np.array([0,1,0, 0,0,1])
-    a = GeoArray(np.ones((5,5,3)), crs=4326, mat=prj)
-    b = a.mean(axis=-1)
-    print(type(b))
-    print(b.shape)
-    '''
+    a = GeoArray(np.ones((5,5)), crs=4326, mat=prj)
     print(a.crs)
     print(a.mat)
     b = a+1
@@ -83,4 +86,3 @@ if __name__ == '__main__':
     c = a[1::2,1::2]
     print(c.crs)
     print(c.mat)
-    '''

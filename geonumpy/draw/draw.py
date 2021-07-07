@@ -7,17 +7,15 @@ from numba import jit
 
 def draw_polygon(raster, shape, color, width):
     shape = shape.to_crs(raster.crs)
-    m = raster.mat
-    m = [1/m[0,1], 0, 0, 1/m[1,2], -m[0,0]/m[0,1], -m[1,0]/m[1,2]]
     img = Image.fromarray(raster)
     draw = ImageDraw.Draw(img)
-    geoms = shape['geometry']
+    geoms = shape['geometry'].affine_transform(raster.imat1)
     if isinstance(color, np.ndarray): colors = color.tolist()
     elif isinstance(color, pd.Series): colors = color.to_list()
     elif isinstance(color, str): colors = shape[color].to_list()
     else: colors = [color] * len(geoms)
     for g, c in zip(geoms, colors):
-        gs = affine_transform(g, m)
+        gs = g #affine_transform(g, m)
         if isinstance(gs, Polygon): gs = [gs]
         if isinstance(gs, LineString): gs = [gs]
         for g in gs:
@@ -61,6 +59,7 @@ def draw_mask(img, msk):
     return img
 
 def draw_unit(raster, x, y, w, h, ft, color, unit, lw, anc='left'):
+    y = y-h
     img = Image.fromarray(raster)
     d = ImageDraw.Draw(img)
     def f(x, dir=0):
@@ -177,6 +176,7 @@ def draw_style(raster, x, y, body, mar, recsize, font, color, box):
         elif item[0]=='blank':
             cury -= item[1]
         else:
+            print(item)
             t, tf, ts = item
             tf = ImageFont.truetype(tf, ts)
             tw, th = d.textsize(t, tf)

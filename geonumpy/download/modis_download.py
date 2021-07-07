@@ -2,7 +2,6 @@ import urllib.request as request
 import os, datetime, json
 
 url = 'https://ladsweb.modaps.eosdis.nasa.gov/archive/allData'
-headers={'Authorization':'Bearer A551740E-7D2C-11EA-BE08-901F704FEBF3'}
 
 def get_lev_pro_year(level, product, year):
     ref = url + '/%s/%s/%s.json'%(level, product, year)
@@ -34,10 +33,10 @@ def get_all(level, product, areas, year, days = (0,365)):
 
 def download_one(pre, name, des):
     ref = url + '/%s/%s/%s/%s/%s'%(pre+(name,))
-    req = request.Request(ref, headers=headers)
+    req = request.Request(ref)
     response = request.urlopen(req)
     html = response.read()
-    f = open('%s/%s'%(des, name), 'wb')
+    f = open('%s/%s'%(des,name), 'wb')
     f.write(html)
     f.close()
 
@@ -60,7 +59,9 @@ def download(files, des):
         except:
             print('failed!')
     print('download completed, succ %s，failed %s'%(succ, len(files)-succ))
+
+
     
 if __name__ == '__main__':
     files = search(['MOD09Q1', 'MOD11A2'], level=6, areas=['h25v05', 'h27v05', 'h28v05'], terms=[(2019, (0,30))])
-    download(files, '.')
+    download(files, '')
