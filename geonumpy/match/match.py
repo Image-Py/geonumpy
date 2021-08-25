@@ -1,4 +1,5 @@
-import gdal, osr, pyproj
+from osgeo import gdal, osr
+import pyproj
 import geopandas as gpd
 from glob import glob
 import numpy as np

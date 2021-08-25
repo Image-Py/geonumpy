@@ -1,5 +1,6 @@
 import geopandas as gpd
-from osgeo import gdal, osr
+from osgeo import gdal, osr, ogr
+from osgeo import gdal_array
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -84,6 +85,25 @@ def write_tif(raster, path):
     tif.SetProjection(crs.ExportToWkt())
     for i in range(raster.channels()):
         tif.GetRasterBand(i+1).WriteArray(raster.channels(i))
+
+def array_as_shp(raster, path, field='class'):
+    tif = gdal_array.OpenArray(raster)
+    tif.SetGeoTransform(raster.mat.ravel())
+    crs = osr.SpatialReference()
+    crs.ImportFromProj4(pyproj.CRS(raster.crs).to_proj4())
+    tif.SetProjection(crs.ExportToWkt())
+    for i in range(raster.channels()):
+        tif.GetRasterBand(i+1).WriteArray(raster.channels(i))
+    band = tif.GetRasterBand(1)
+    driver = ogr.GetDriverByName("ESRI Shapefile")
+    outDatasource = driver.CreateDataSource(path)
+    srs = osr.SpatialReference()
+    srs.ImportFromWkt( tif.GetProjectionRef() )
+    outLayer = outDatasource.CreateLayer(path, srs)
+    newField = ogr.FieldDefn(field, ogr.OFTInteger)
+    outLayer.CreateField(newField)
+    gdal.Polygonize(band, None, outLayer, 0, [],callback=None)  
+    outDatasource.Destroy()
 
 def show_raster(raster, c=0):
     plt.imshow(raster.imgs[c])
