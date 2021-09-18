@@ -34,34 +34,34 @@ def match_one(raster, out, chan='all', step=10, order=1):
     imgd, prjd, md = out, out.crs, out.mat
     img, prjs, ms = raster, raster.crs, raster.mat
     hs, ws = img.shape[:2]
-    xx = np.linspace(0,ws-1,100).reshape((-1,1))*[1,0]
-    yy = np.linspace(0,hs-1,100).reshape((-1,1))*[0,1]
-    xy = np.vstack((xx, xx+[0,hs-1], yy, yy+[ws-1,0]))
+    xx = np.linspace(0,ws,100).reshape((-1,1))*[1,0]
+    yy = np.linspace(0,hs,100).reshape((-1,1))*[0,1]
+    xy = np.vstack((xx, xx+[0,hs], yy, yy+[ws,0]))
     xy = mp2pm(xy, ms, prjs, prjd, md)#.astype(np.int)
     
-    (left, top), (right, bot) = xy.min(axis=0)-1, xy.max(axis=0)+1
-    left, right = np.clip((left, right), -1, imgd.shape[1])
-    top, bot = np.clip((top, bot), -1, imgd.shape[0])
-    hb, wb = bot-top, right-left
+    (left, top), (right, bot) = xy.min(axis=0), xy.max(axis=0)
+    left, right = np.clip((left, right), 0, imgd.shape[1])
+    top, bot = np.clip((top, bot), 0, imgd.shape[0])
+    hb, wb = bot-top, right-left # 像素数目
     nh, nw = int(hb//step+1), int(wb//step+1)
     xy = np.mgrid[top:bot:nh*1j, left:right:nw*1j].reshape((2,-1)).T
+
     xs, ys = mp2pm(xy[:,::-1], md, prjd, prjs, ms).T
 
     xs.shape = ys.shape = (nh, nw)#block.shape
 
-    intleft, intright = max(0, ceil(left)), min(imgd.shape[1]-1, floor(right))
-    inttop, intbot = max(0, ceil(top)), min(imgd.shape[0]-1, floor(bot))
-    rc = np.mgrid[inttop:intbot+1, intleft:intright+1].reshape((2,-1))
-    frc = rc.astype(np.float32)
+    intleft, intright = floor(left), ceil(right)
+    inttop, intbot = floor(top), ceil(bot)
+    rc = np.mgrid[inttop:intbot, intleft:intright].reshape((2,-1))
+    frc = rc.astype(np.float32) + 0.5
     frc[0] = (frc[0]-top)/(bot-top)*(nh-1)
     frc[1] = (frc[1]-left)/(right-left)*(nw-1)
-    xs = map_coordinates(xs, frc, cval=-100, order=1)
-    ys = map_coordinates(ys, frc, cval=-100, order=1)
+    xs = map_coordinates(xs, frc, order=1)
+    ys = map_coordinates(ys, frc, order=1)
     for i in chan:
         #range(img.channels()):
         rcs, dcs = img.channels(i), imgd.channels(i)
-        rcs = np.pad(rcs, 1, 'edge')
-        vs = map_coordinates(rcs, np.array([ys, xs])+1, order=order)#prefilter=False)
+        vs = map_coordinates(rcs, np.array([ys, xs])-0.5, order=order)#prefilter=False)
         vs[np.isnan(vs)] = 0
         dcs[tuple(rc)] = np.maximum(dcs[tuple(rc)], vs)   
     return imgd

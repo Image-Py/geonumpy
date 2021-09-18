@@ -45,6 +45,7 @@ class GeoArray(np.ndarray):
     def imat1(self): return self.imat.ravel()[[1,2,4,5,0,3]]
 
     def project(self, x, y):
+        x += 0.5; y += 0.5
         m, offset = self.mat[:,1:], self.mat[:,:1]
         xy = np.array([x, y]).reshape((2,-1))
         return np.dot(m, xy) + offset
@@ -52,7 +53,7 @@ class GeoArray(np.ndarray):
     def invpro(self, e, n):
         m, offset = self.mat[:,1:], self.mat[:,:1]
         en = np.array([e, n]).reshape((2,-1))
-        return np.dot(inv(m), en - offset)
+        return np.dot(inv(m), en - offset) - 0.5
 
     def channels(self, n=None):
         if n is None:
