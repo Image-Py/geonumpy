@@ -51,7 +51,9 @@ def read_tif_box(path):
     prj = ds.GetProjection()
     m = ds.GetGeoTransform()
     m = np.array(m).reshape((2,3))
-    chans = ['Channel:%d'%i for i in range(ds.RasterCount)]
+    #chans = ['Channel:%d'%i for i in range(ds.RasterCount)]
+    rs = range(ds.RasterCount)
+    chans = [ds.GetRasterBand(i+1).GetDescription() for i in rs]
     shape = (ds.RasterYSize, ds.RasterXSize)
     return (shape, prj, m, chans)
 
@@ -70,21 +72,25 @@ def read_raster_box(path):
     if 'hdf' in path.lower(): return read_hdf_box(path)
     if 'tif' in path.lower(): return read_tif_box(path)
 
-def write_tif(raster, path):
+
+def write_tif(raster, path, compress=None, nodata=None):
     #if isinstance(raster, tuple): raster = [raster]
     driver = gdal.GetDriverByName("GTiff")
     tps = {np.uint8:gdal.GDT_Byte, np.int16:gdal.GDT_Int16,
            np.int32:gdal.GDT_Int32, np.uint16:gdal.GDT_UInt16,
            np.uint32:gdal.GDT_UInt32, np.float32:gdal.GDT_Float32,
            np.float64:gdal.GDT_Float64}
+    options = [] if compress is None else ['COMPRESS=%s'%compress]
     tif = driver.Create(path, raster.shape[1], raster.shape[0],
-                        raster.channels(), tps[raster.dtype.type])
+                        raster.channels(), tps[raster.dtype.type], options=options)
     tif.SetGeoTransform(raster.mat.ravel())
     crs = osr.SpatialReference()
     crs.ImportFromProj4(pyproj.CRS(raster.crs).to_proj4())
     tif.SetProjection(crs.ExportToWkt())
     for i in range(raster.channels()):
-        tif.GetRasterBand(i+1).WriteArray(raster.channels(i))
+        b = tif.GetRasterBand(i+1)
+        b.WriteArray(raster.channels(i))
+        if not nodata is None: b.SetNoDataValue(nodata)
 
 def array_as_shp(raster, path, field='class'):
     tif = gdal_array.OpenArray(raster)

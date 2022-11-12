@@ -6,20 +6,41 @@ from .. import geoarray
 import numpy as np
 from shapely.geometry import Polygon, GeometryCollection
 from imageio import imread, imsave
+from math import ceil, floor
 
 max_lon = 85.0511287798
 max_dis = 20037508.343
 
-def build_grid_idx(level=0):
+def build_grid_idx(level=0, box=None):
     n = 2**level
-    rcs = np.mgrid[0:n,0:n].reshape(2,-1)
-    rgs = np.mgrid[-max_dis:max_dis:(n+1)*1j,
-                   max_dis:-max_dis:(n+1)*1j]
+
+    ls = np.mgrid[0:n]
+
+    minlat, minlon, maxlat, maxlon = box.bounds
+    # print(minlat, minlon, maxlat, maxlon)
+    step = max_dis * 2 / n
+
+    sr = floor((minlat+max_dis)/step)
+    er = ceil((maxlat+max_dis)/step)
+
+    sc = floor((max_dis-maxlon)/step)
+    ec = ceil((max_dis-minlon)/step)
+
+    rcs = np.mgrid[sr:er, sc:ec].reshape(2,-1)
+
+    # rgs = np.mgrid[-max_dis+sr*step:-max_dis+er*step:(n+1)*1j]
+
+    rgs = np.mgrid[floor(minlat/step)*step:ceil(maxlat/step)*step:(er-sr+1)*1j,
+                   ceil(maxlon/step)*step:floor(minlon/step)*step:(ec-sc+1)*1j]
+
+    print(sr, er, sc, ec)
     p1, p2 = rgs[:,:-1,:-1], rgs[:,:-1,1:]
     p3, p4 = rgs[:,1:,1:], rgs[:,1:,:-1]
     pts = np.array([p1, p2, p3, p4])
     plgs = pts.reshape(4,2,-1).transpose(2,0,1)
+
     plgs = [Polygon(i) for i in plgs]
+    print(len(plgs), rcs.shape)
     data = {'geometry':plgs, 'x':rcs[0], 'y':rcs[1]}
     zs = np.ones(len(plgs), dtype=np.uint8)
     data['z'] = zs * level
@@ -41,7 +62,8 @@ def build_online_tiles(level=3, box=None):
         rg = max_dis*2 / 256 / 2 ** np.arange(13)
         k = max(l/s, rg[-1]+1e-3)
         level = np.argmax(rg <= k)
-    ts = build_grid_idx(level)
+        print(level)
+    ts = build_grid_idx(level, shp)
     if not box is None: ts = ts[ts.intersects(shp)]
     return ts
 

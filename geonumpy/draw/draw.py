@@ -79,9 +79,9 @@ def draw_unit(raster, x, y, w, h, ft, color, unit, lw, anc='left'):
                      fill=[color, None][c], outline=color, width=lw)
     font = ImageFont.truetype(*ft)
     for s in (0,1,3,6,10):
-        w, h = d.textsize(str(step*(s))+['',' km'][s==10], font)
+        w, h = d.textsize(str(step*(s))+['',' '+unit][s==10], font)
         d.text((f(x)+s*cell-w//2+offsetx, f(y,1)-ft[1]*1.2),
-               str(step*(s))+['',' km'][s==10], font=font, fill=color, align='center')
+               str(step*(s))+['',' '+unit][s==10], font=font, fill=color, align='center')
     raster[:] = np.array(img)
 
 def draw_N(raster, x, y, ft, lw, h, color):
